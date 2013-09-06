@@ -1,0 +1,25 @@
+<% include header %>
+<div class="list">
+<ul>
+<% posts.forEach(function(post, index){ %>
+	<li>
+		  <form method="post" action="/make">
+			  <input type="submit" value="生成" />		   
+			  <span class="info"><%- post.time %>:<%= post.web %></span>
+			  <input type="hidden" name="id" value="<%- post.time %>">
+			  <a href="http://127.0.0.1:3000/html/<%- post.time %>/index.html" target="_blank">查看&gt;&gt;</a>
+		  </form>
+		  <a href="/del?id=<%- post.time %>" class="delete" title="删除">x</a>
+	</li>
+<% }) %>	
+</ul>
+<script>
+$(".list li").hover(function(){
+	$(this).addClass("hover");
+},function(){
+	$(this).removeClass("hover");
+})
+</script>
+</div>
+</body>
+</html>
