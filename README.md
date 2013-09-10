@@ -14,13 +14,13 @@ AcCms
 运行地址：http://127.0.0.1:3000
 
 选项配置：
-
+------
 public\javascripts\controlData.js中自定义页面元素，一条数据分别对应为选项名称和选项所需参数 
 
 models\makeFile.js中MakeFile.formatData配置controlData.js中选项对应生成的html和css
 
 参数说明：
-
+-------
 1、“网页标题”即为网页title
 
 2、“上传背景”为网页背景，可同时选择多张，显示顺序按照打开的顺序
