@@ -26,3 +26,4 @@ models\makeFile.js中MakeFile.formatData配置controlData.js中选项对应生�
 6、背景色后按钮为自定义选项
 7、暂无图片上传功能，生成页面之后需手动复制图片到img文件夹，静态文件生成目录为public/html
 
+11
