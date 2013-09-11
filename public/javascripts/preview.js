@@ -215,7 +215,7 @@ Preview.prototype.add=function(e){
 	var array=controlData[type];
 	for (var i=0;i<array.length;i++){
 		var opt="width,height,left,top",defaultValue='';
-		if(opt.indexOf(array[i])>=0){
+		if(opt.split(",").indexOf(array[i])>=0){
 			defaultValue=100;
 		}
 		content+='<div class="lh"><span>'+array[i]+':</span> <input type="text" name="'+array[i]+'" value="'+defaultValue+'" /></div>';
@@ -245,11 +245,10 @@ Preview.prototype.submit=function(){
 					data+=p+':^'+$(tarArray[j]).data()[p]+","
 				}
 			}
-			if(i!=(items.length-1)){
-				data+='||';
-			}
+			data+='||';
 		}
 	}
+	
 	$("#dataArea").append('<textarea name="posts">'+data+'</textarea>')
 	$("#dataForm").submit();
 }

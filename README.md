@@ -21,3 +21,4 @@ models\makeFile.js中MakeFile.formatData配置controlData.js中选项对应生�
 5、“背景色”指body背景色 <br />
 6、背景色后按钮为自定义选项 <br />
 7、暂无图片上传功能，生成页面之后需手动复制图片到img文件夹，静态文件生成目录为public/html <br />
+8、自定义项中qqWeiboControl腾讯微博分享功能,需先添加一个文本域和按钮，以自定义ID控制 <br />
