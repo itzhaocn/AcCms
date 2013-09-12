@@ -248,6 +248,10 @@ Preview.prototype.submit=function(){
 			data+='||';
 		}
 	}
+	if($("#dataForm")[0].width.value==""){
+		alert("网页宽度不能为空！");
+		return false;
+	}
 	
 	$("#dataArea").append('<textarea name="posts">'+data+'</textarea>')
 	$("#dataForm").submit();
@@ -276,3 +280,9 @@ $("#submit").click(function(){
 	pre.submit();
 	return false;
 })
+
+
+
+
+
+

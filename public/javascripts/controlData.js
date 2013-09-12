@@ -2,7 +2,7 @@
 var controlData={
 	"div":["mid","width","height","left","top"],
 	//链接
-	"link":["mid","text","width","height","left","top","target","url"],
+	"link":["mid","text","width","height","left","top","target","url","background"],
 	"imgLink":["mid","img","text","width","height","left","top","target","url"],
 	//hover效果链接，img需填写完整background
 	"hoverLink":["mid","text","width","height","left","top","target","url","background","hoverBackground"],
@@ -11,7 +11,14 @@ var controlData={
 	//微博textarea
 	"textarea":["mid","width","height","left","top","text","padding","background","color","border"],
 	//腾讯微博功能,需先添加一个文本域和按钮，以ID控制
-	"qqWeiboControl":["textareaId","btnId"]
+	"qqWeiboControl":["textareaId","btnId"],
+	
+	/*
+	滚动模块,定位为div，
+	滚动内容为ul列表,页面生成后手动添加,水平滚动li为内联元素display:inline;
+	参数依次为DirectionScroll(target,direction,delay,speed,scrollNum)
+	*/
+	"scrollControl":["targetId","direction","delay","speed","scrollNum"]
 }
 
 

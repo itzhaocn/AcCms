@@ -1,7 +1,10 @@
-//删除目录及文件
 var fs=require('fs'),
 	path = require('path'),
 	rmdirSync = require('../models/rmdirSync.js');
+
+//js效果文件
+var qqWeibo=require('../effect/qqWeibo.js'),
+	directionScroll=require('../effect/directionScroll.js');
 
 function MakeFile(id,web,bg,width,height,bgColor,posts){
 	this.id=id;
@@ -31,9 +34,10 @@ MakeFile.prototype.make=function(callback){
 	}
 	
 	this.formatData();
+	this.makeSpaceImg();
 	this.makeCss();
-	this.makeHtml();
 	this.makeJs();
+	this.makeHtml();
 	callback();
 }
 
@@ -52,8 +56,8 @@ MakeFile.prototype.makeCss=function(){
 				+'.bg_box i{display:block;height:1px;font-size:0;line-height:0;width:'+this.width+'px;margin:0 auto;}'+br
 				+'.wrap_box{position:absolute;left:0;top:0;width:100%;}'+br
 				+'.wrap{width:'+this.width+'px;margin:0 auto;position:relative;}'+br
-				+'.mod,.mod_link{position:absolute;display:block;}'+br
-				+'.mod_link{text-indent:-999px;overflow:hidden;}'+br;
+				+'.mod,.mod_link{position:absolute;display:block;overflow:hidden;}'+br
+				+'.mod_link{text-indent:-999px;}'+br;
 
 	var bgs=this.bg.split(",");
 	for (var i=0;i<(bgs.length-1);i++ ){
@@ -92,11 +96,15 @@ MakeFile.prototype.makeHtml=function(){
 			+'	<div class="wrap" id="wrap">'+br
 			+this.htmlMod+br
 			+'	</div>'+br
-			+'</div>'+br
-			+'<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>'+br
-			+'<script src="js/common.js"></script>'+br
-			+'<script>'+br+this.jsControl+br+'</script>'+br
-			+'</body>'+br
+			+'</div>'+br;
+	if(this.jsMod!=""){
+		content+='<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>'+br
+				+'<script src="js/common.js"></script>'+br;
+	}
+	if(this.jsControl!=""){
+		content+='<script>'+br+this.jsControl+br+'</script>'+br;
+	}
+	content+='</body>'+br
 			+'</html>'+br;
 	fs.open(this.path+'/index.html', 'w', 0644,function(e,fd){
 		if(e) throw e;
@@ -108,15 +116,29 @@ MakeFile.prototype.makeHtml=function(){
 }
 
 MakeFile.prototype.makeJs=function(){
-	var content=this.jsMod+br;
-	fs.open(this.path+'/js/common.js', 'w', 0644,function(e,fd){
+	if(this.jsMod!=""){
+		var content=this.jsMod+br;
+		fs.open(this.path+'/js/common.js', 'w', 0644,function(e,fd){
+			if(e) throw e;
+			fs.write(fd,content,0,'utf8',function(e){
+				if(e) throw e;
+				fs.closeSync(fd);
+			})
+		})	
+	}
+}
+
+MakeFile.prototype.makeSpaceImg=function(){
+	var content='iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAMAAAAoyzS7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyBpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBXaW5kb3dzIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkY0QTAzRTkyMUI2OTExRTM4MjMzRThBODczRDE1NTdBIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkY0QTAzRTkzMUI2OTExRTM4MjMzRThBODczRDE1NTdBIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6RjRBMDNFOTAxQjY5MTFFMzgyMzNFOEE4NzNEMTU1N0EiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6RjRBMDNFOTExQjY5MTFFMzgyMzNFOEE4NzNEMTU1N0EiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4Xuqs+AAAABlBMVEX///8AAABVwtN+AAAADElEQVR42mJgAAgwAAACAAFPbVnhAAAAAElFTkSuQmCC';
+	fs.open(this.path+'/img/space.png', 'w', 0644,function(e,fd){
 		if(e) throw e;
-		fs.write(fd,content,0,'utf8',function(e){
+		fs.write(fd,content,0,'base64',function(e){
 			if(e) throw e;
 			fs.closeSync(fd);
 		})
 	})	
 }
+
 
 MakeFile.prototype.formatData=function(){
 	var mods=[],result=this.posts.split("||");
@@ -137,7 +159,10 @@ MakeFile.prototype.formatData=function(){
 				html+='		<div id="'+mods[i].mid+'" class="mod" style="width:'+mods[i].width+'px;height:'+mods[i].height+'px;left:'+mods[i].left+'px;top:'+mods[i].top+'px;"></div>'+br;
 			break;
 			case "link": 
-				html+='		<a href="'+mods[i].url+'" id="'+mods[i].mid+'" class="mod_link" style="width:'+mods[i].width+'px;height:'+mods[i].height+'px;left:'+mods[i].left+'px;top:'+mods[i].top+'px;" target="'+mods[i].target+'">'+mods[i].text+'</a>'+br;
+				if(mods[i].background==""){
+					mods[i].background="url(../img/space.png) no-repeat -999px 0";
+				}
+				html+='		<a href="'+mods[i].url+'" id="'+mods[i].mid+'" class="mod_link" style="width:'+mods[i].width+'px;height:'+mods[i].height+'px;left:'+mods[i].left+'px;top:'+mods[i].top+'px;background:'+mods[i].background+';" target="'+mods[i].target+'">'+mods[i].text+'</a>'+br;
 			break;
 			case "imgLink": 
 				html+='		<a href="'+mods[i].url+'" id="'+mods[i].mid+'" class="mod" style="width:'+mods[i].width+'px;height:'+mods[i].height+'px;left:'+mods[i].left+'px;top:'+mods[i].top+'px;" target="'+mods[i].target+'"><img src="'+mods[i].img+'" alt="'+mods[i].text+'" /></a>'+br;
@@ -147,6 +172,12 @@ MakeFile.prototype.formatData=function(){
 					var hoverId=mods[i].mid;
 				}else{
 					var hoverId='mod'+i;
+				}
+				if(mods[i].background==""){
+					mods[i].background="url(../img/space.png) no-repeat -999px 0";
+				}
+				if(mods[i].hoverBackground==""){
+					mods[i].hoverBackground="url(../img/space.png) no-repeat -999px 0";
 				}
 				html+='		<a href="'+mods[i].url+'" class="mod_link" id="'+hoverId+'" style="width:'+mods[i].width+'px;height:'+mods[i].height+'px;left:'+mods[i].left+'px;top:'+mods[i].top+'px;" target="'+mods[i].target+'">'+mods[i].text+'</a>'+br;
 				css+='#'+hoverId+'{background:'+mods[i].background+';}'+br
@@ -169,20 +200,15 @@ MakeFile.prototype.formatData=function(){
 			break;
 			case "qqWeiboControl":
 				if(js.indexOf("qqWeibo")<0){
-					js+='function qqWeibo(btnId,textareaId){'+br
-						+'	$("#"+btnId).click(function(){'+br
-						+'		var _t = encodeURIComponent($("#"+textareaId).val());'+br
-						+'		var _url = encodeURI(document.location);'+br
-						+'		var _appkey = encodeURI("appkey");'+br
-						+'		var _pic = encodeURI("");'+br
-						+'		var _site = "";'+br
-						+'		var _u = "http://v.t.qq.com/share/share.php?title="+_t+"&url="+_url+"&appkey="+_appkey+"&site="+_site+"&pic="+_pic'+br
-						+'		window.open( _u,"转播到腾讯微博", "width=700, height=680, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, location=yes, resizable=no, status=no" );'+br
-						+'		return false;'+br
-						+'	})'+br
-						+'}'+br;
+					js+=qqWeibo+br+br;
 				}
 				jsControl+='qqWeibo("'+mods[i].btnId+'","'+mods[i].textareaId+'");'+br;
+			break;
+			case "scrollControl":
+				if(js.indexOf("directionScroll")<0){
+					js+=directionScroll+br+br;
+				}
+				jsControl+='directionScroll("'+mods[i].targetId+'","'+mods[i].direction+'",'+mods[i].delay+','+mods[i].speed+','+mods[i].scrollNum+');'+br;
 			break;
 		}
 	}
@@ -191,6 +217,10 @@ MakeFile.prototype.formatData=function(){
 	this.jsMod=js;
 	this.jsControl=jsControl;
 }
+
+
+
+
 
 
 
