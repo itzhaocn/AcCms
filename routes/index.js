@@ -31,13 +31,14 @@ module.exports = function(app){
 		});
 	});	
 	
-	app.post('/safe', function(req, res){
+	app.post('/save', function(req, res){
 		var web=req.body.web,
 			bg=req.body.bg,
 			width=req.body.width,
+			height=req.body.height,
 			bgColor=req.body.bgColor,
 			posts=req.body.posts;
-		var post = new Post(web,bg,width,bgColor,posts);
+		var post = new Post(web,bg,width,height,bgColor,posts);
 		post.save(function(err){
 			if(err){
 			  req.flash('error', err); 
@@ -73,6 +74,42 @@ module.exports = function(app){
 				  error: req.flash('error').toString()
 				});
 			})
+		});
+	});	
+	app.get('/modify', function(req, res){
+		var id=req.query.id;
+		Post.get(id,function(err,results){
+			res.render('modify',{
+				title: '修改 '+results[0].web+' '+id,
+				webId:id,
+				web: results[0].web,
+				bg: results[0].bg,
+				width: results[0].width,
+				height: results[0].height,
+				bgColor: results[0].bgColor,
+				posts : results[0].posts,
+				success: req.flash('success').toString(),
+				error: req.flash('error').toString()
+			});
+		});
+	});	
+	app.post('/modify', function(req, res){
+		var webId=req.body.webId,
+			web=req.body.web,
+			bg=req.body.bg,
+			width=req.body.width,
+			height=req.body.height,
+			bgColor=req.body.bgColor,
+			posts=req.body.posts;
+		var post = new Post(web,bg,width,height,bgColor,posts);
+		post.update(webId,function(err){
+			if(err){
+			  req.flash('error', err); 
+			  return res.redirect('/');
+			}
+
+			req.flash('success', '修改成功!');
+			res.redirect('/list');
 		});
 	});	
 	app.get('/del', function(req, res){

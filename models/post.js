@@ -1,9 +1,10 @@
 var mongodb = require('./db');
 
-function Post(web,bg,width,bgColor,posts) {
+function Post(web,bg,width,height,bgColor,posts) {
   this.web= web;
   this.bg= bg;
   this.width= width;
+  this.height= height;
   this.bgColor= bgColor;
   this.posts = posts;
 }
@@ -27,6 +28,7 @@ Post.prototype.save = function(callback) {//存储一篇文章及其相关信息
       bg:this.bg,
       web:this.web,
       width:this.width,
+      height:this.height,
       bgColor:this.bgColor,
       posts: this.posts
   };
@@ -47,6 +49,38 @@ Post.prototype.save = function(callback) {//存储一篇文章及其相关信息
       }, function (err,post) {
         mongodb.close();
         callback(null);
+      });
+    });
+  });
+};
+
+Post.prototype.update = function(webId,callback) {//存储一篇文章及其相关信息
+	var bg=this.bg,
+		web=this.web,
+		width=this.width,
+		height=this.height,
+		bgColor=this.bgColor,
+		posts=this.posts;
+  //打开数据库
+  mongodb.open(function (err, db) {
+    if (err) {
+      return callback(err);
+    }
+
+	db.collection('list', function (err, collection) {
+      if (err) {
+        mongodb.close();
+        return callback(err);
+      }
+	  console.log(this.width);
+	//update数据
+
+      collection.update(
+		  {time:webId},
+		  {$set:{"bg":bg,"web":web,"width":width,"height":height,"bgColor":bgColor,"posts":posts}},
+		  {safe: true}, function (err,post) {
+			mongodb.close();
+			callback(null);
       });
     });
   });

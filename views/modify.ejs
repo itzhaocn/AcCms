@@ -1,23 +1,24 @@
 <% include header %>
 		<script src="/javascripts/jquery-ui.js"></script>
 		<div class="zone">
-			<form method="post" id="dataForm" action="/save">
+			<form method="post" id="dataForm" action="/modify">
 				<ul>
 					<li>
-						<strong>网页标题</strong><input type="text" name="web" value="" >
+						<input type="hidden" name="webId" value="<%= webId %>" />
+						<strong>网页标题</strong><input type="text" name="web" value="<%= web %>" >
 					</li>
 					<li>
 						<strong>上传背景：</strong><input type="file" multiple accept="image/gif,image/png,,image/jpeg" id="files">
-						<input type="hidden" name="bg" id="bg" value="" />
+						<input type="hidden" name="bg" id="bg" value="<%= bg %>" />
 					</li>
 					<li>
-						<strong>网页宽：</strong><input type="text" name="width" value="" class="w01 unity" data-obj="width"/>px
+						<strong>网页宽：</strong><input type="text" name="width" value="<%= width %>" class="w01 unity" data-obj="width"/>px
 					</li>
 					<li>
-						<strong>网页高：</strong><input type="text" name="height" value="" class="w01 unity" data-obj="height"/>px
+						<strong>网页高：</strong><input type="text" name="height" value="<%= height %>" class="w01 unity" data-obj="height"/>px
 					</li>
 					<li id="setBg">
-						<strong>背景色：</strong><input type="text" name="bgColor" value="" class="w01 unity" data-obj="bgColor" />
+						<strong>背景色：</strong><input type="text" name="bgColor" value="<%= bgColor %>" class="w01 unity" data-obj="bgColor" />
 					</li>
 					<li>
 						<div id="dataArea" class="data_area"></div>
@@ -42,6 +43,18 @@
 </div>
 </script>
 <script src="/javascripts/controlData.js"></script>
+<script src="/javascripts/modify.js"></script>
+<script>
+var modify=new Modify({
+	webId:<%= webId %>,
+	bg:"<%= bg %>",
+	width:<%= width %>,
+	height:<%= height %>,
+	bgColor:"<%= bgColor %>",
+	posts:"<%= posts %>"	
+});
+modify.init();
+</script>
 <script src="/javascripts/preview.js"></script>
 
 
