@@ -4,7 +4,8 @@ var fs=require('fs'),
 
 //js效果文件
 var qqWeibo=require('../effect/qqWeibo.js'),
-	directionScroll=require('../effect/directionScroll.js');
+	directionScroll=require('../effect/directionScroll.js'),
+	msgBox=require('../effect/msgBox.js');
 
 function MakeFile(id,web,bg,width,height,bgColor,posts){
 	this.id=id;
@@ -52,12 +53,16 @@ MakeFile.prototype.makeCss=function(){
 				+'*html .group{height:1%;}'+br
 				+'*:first-child+html .group{min-height:1px;}'+br
 				+'.group:after{content:".";display:block;height:0;clear:both;visibility:hidden;font-size:0;}'+br
-				+'.bg_box{min-width:'+this.width+'px;}'+br
+				+'.bg_box{min-width:'+this.width+'px;height:'+this.height+'px;}'+br
 				+'.bg_box i{display:block;height:1px;font-size:0;line-height:0;width:'+this.width+'px;margin:0 auto;}'+br
 				+'.wrap_box{position:absolute;left:0;top:0;width:100%;}'+br
 				+'.wrap{width:'+this.width+'px;margin:0 auto;position:relative;}'+br
 				+'.mod,.mod_link{position:absolute;display:block;overflow:hidden;}'+br
-				+'.mod_link{text-indent:-999px;}'+br;
+				+'.mod_link{text-indent:-999px;}'+br
+				+'.shade{display:none;background:#000000;opacity:0.3;filter:alpha(opacity=30);position:fixed;_position:absolute;width:100%;height:100%;z-index:10;left:0;top:0;}'+br
+				+'.win{display:none;position:fixed;_position:absolute;z-index:100;left:50%;top:50%;margin:-200px 0 0 -200px;_margin:0;width:400px;height:400px;background:#CCCCCC;}'+br
+				+'.win_close{position:absolute;right:4px;top:4px;width:9px;height:8px;background:red url(../img/win_close.png) no-repeat 0 0;cursor:pointer;}'+br;
+
 
 	var bgs=this.bg.split(",");
 	for (var i=0;i<(bgs.length-1);i++ ){
@@ -86,7 +91,7 @@ MakeFile.prototype.makeHtml=function(){
 			   +'<link rel="stylesheet" type="text/css" href="css/style.css" />'+br
 			   +'</head>'+br
 			   +'<body>'+br
-			   +'<div class="bg_box">'+br;
+			   +'<div class="bg_box" id="bg">'+br;
 	var bgs=this.bg.split(",")
 	for (var i=0;i<(bgs.length-1);i++ ){
 		content+='	<div class="bg'+i+'"><i></i></div>'+br;
@@ -96,7 +101,8 @@ MakeFile.prototype.makeHtml=function(){
 			+'	<div class="wrap" id="wrap">'+br
 			+this.htmlMod+br
 			+'	</div>'+br
-			+'</div>'+br;
+			+'</div>'+br
+			+this.bodyAppendHtml+br;
 	if(this.jsMod!=""){
 		content+='<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>'+br
 				+'<script src="js/common.js"></script>'+br;
@@ -152,7 +158,7 @@ MakeFile.prototype.formatData=function(){
 		}
 	}
 	
-	var n=mods.length,html='',css='',js='',jsControl='';
+	var n=mods.length,html='',css='',js='',jsControl='',bodyAppendHtml='';
 	for(var i=0;i<n;i++){
 		switch (mods[i].type){
 			case "div":
@@ -210,12 +216,30 @@ MakeFile.prototype.formatData=function(){
 				}
 				jsControl+='directionScroll("'+mods[i].targetId+'","'+mods[i].direction+'",'+mods[i].delay+','+mods[i].speed+','+mods[i].scrollNum+');'+br;
 			break;
+			case "winControl":
+				if(js.indexOf("msgBox")<0){
+					bodyAppendHtml+='<div class="shade" id="shade"></div>'+br;
+					js+=msgBox+br+br;
+				}
+				bodyAppendHtml+='<input type="button" name="" id="'+mods[i].btnId+'" value="'+mods[i].btnName+'" />'+br
+					+'<div id="'+mods[i].mid+'" class="win '+mods[i].className+'">'+br
+					+'	<div class="win_close"></div>'+br
+					+'</div>'+br;
+				jsControl+='$("#'+mods[i].btnId+'").click(function(){'+br
+						+'	$("#'+mods[i].mid+',#shade").show();'+br
+						+'	msgBox("'+mods[i].mid+'","'+mods[i].returnTop+'");'+br
+						+'	return false;'+br
+						+'});'+br;
+			break;
+
+
 		}
 	}
 	this.htmlMod=html;
 	this.cssMod=css;
 	this.jsMod=js;
 	this.jsControl=jsControl;
+	this.bodyAppendHtml=bodyAppendHtml;
 }
 
 

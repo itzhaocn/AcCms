@@ -10,7 +10,7 @@ AcCms
 运行地址：http://127.0.0.1:3000 <br />
 
 选项配置： <br />
-public\javascripts\controlData.js中自定义页面元素，一条数据分别对应为选项名称和选项所需参数  <br />
+public\javascripts\controlData.js中自定义页面元素，一条数据分别对应为选项名称和选项所需参数，详见各项对应注释  <br />
 models\makeFile.js中MakeFile.formatData配置controlData.js中选项对应生成的html和css <br />
 页面js效果放置在effect文件夹中，添加新效果需在makeFile.js中引入该模块 <br />
 
