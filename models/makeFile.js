@@ -47,7 +47,7 @@ MakeFile.prototype.makeCss=function(){
 	var content='@charset "utf-8";'+br
 				+'html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,a,em,img,strike,strong,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;font:inherit;vertical-align:baseline;}'+br
 				+'ul,ol{list-style:none;}'+br
-				+'body{color:#333333;line-height:24px;font-size:12px;background:'+this.bgColor+'}'+br
+				+'body{color:#333333;line-height:24px;font-size:12px;background:'+this.bgColor+';}'+br
 				+'a{color:#333333;text-decoration:none;}'+br
 				+'a:hover{text-decoration:underline;}'+br
 				+'*html .group{height:1%;}'+br
@@ -58,7 +58,7 @@ MakeFile.prototype.makeCss=function(){
 				+'.wrap_box{position:absolute;left:0;top:0;width:100%;}'+br
 				+'.wrap{width:'+this.width+'px;margin:0 auto;position:relative;}'+br
 				+'.mod,.mod_link{position:absolute;display:block;overflow:hidden;}'+br
-				+'.mod_link{text-indent:-999px;}'+br
+				+'.mod_link{text-indent:-999px;background:url(img/space.png) no-repeat -999px 0;}'+br
 				+'.shade{display:none;background:#000000;opacity:0.3;filter:alpha(opacity=30);position:fixed;_position:absolute;width:100%;height:100%;z-index:10;left:0;top:0;}'+br
 				+'.win{display:none;position:fixed;_position:absolute;z-index:100;left:50%;top:50%;margin:-200px 0 0 -200px;_margin:0;width:400px;height:400px;background:#CCCCCC;}'+br
 				+'.win_close{position:absolute;right:4px;top:4px;width:9px;height:8px;background:red url(../img/win_close.png) no-repeat 0 0;cursor:pointer;}'+br;
@@ -67,7 +67,7 @@ MakeFile.prototype.makeCss=function(){
 	var bgs=this.bg.split(",");
 	for (var i=0;i<(bgs.length-1);i++ ){
 		var array=bgs[i].split(":");
-		content+='.bg'+i+'{width:100%;background:url(../img/'+array[0]+') no-repeat center 0;height:'+array[1]+'px;}'+br;
+		content+='.bg'+(i+1)+'{width:100%;background:url(../img/'+array[0]+') no-repeat center 0;height:'+array[1]+'px;}'+br;
 	}
 	content+=this.cssMod;
 
@@ -91,10 +91,10 @@ MakeFile.prototype.makeHtml=function(){
 			   +'<link rel="stylesheet" type="text/css" href="css/style.css" />'+br
 			   +'</head>'+br
 			   +'<body>'+br
-			   +'<div class="bg_box" id="bg">'+br;
+			   +'<div class="bg_box">'+br;
 	var bgs=this.bg.split(",")
 	for (var i=0;i<(bgs.length-1);i++ ){
-		content+='	<div class="bg'+i+'"><i></i></div>'+br;
+		content+='	<div class="bg'+(i+1)+'"><i></i></div>'+br;
 	}
 	content+='</div>'+br
 			+'<div class="wrap_box">'+br
@@ -165,10 +165,7 @@ MakeFile.prototype.formatData=function(){
 				html+='		<div id="'+mods[i].mid+'" class="mod" style="width:'+mods[i].width+'px;height:'+mods[i].height+'px;left:'+mods[i].left+'px;top:'+mods[i].top+'px;"></div>'+br;
 			break;
 			case "link": 
-				if(mods[i].background==""){
-					mods[i].background="url(../img/space.png) no-repeat -999px 0";
-				}
-				html+='		<a href="'+mods[i].url+'" id="'+mods[i].mid+'" class="mod_link" style="width:'+mods[i].width+'px;height:'+mods[i].height+'px;left:'+mods[i].left+'px;top:'+mods[i].top+'px;background:'+mods[i].background+';" target="'+mods[i].target+'">'+mods[i].text+'</a>'+br;
+				html+='		<a href="'+mods[i].url+'" id="'+mods[i].mid+'" class="mod_link" style="width:'+mods[i].width+'px;height:'+mods[i].height+'px;left:'+mods[i].left+'px;top:'+mods[i].top+'px;" target="'+mods[i].target+'">'+mods[i].text+'</a>'+br;
 			break;
 			case "imgLink": 
 				html+='		<a href="'+mods[i].url+'" id="'+mods[i].mid+'" class="mod" style="width:'+mods[i].width+'px;height:'+mods[i].height+'px;left:'+mods[i].left+'px;top:'+mods[i].top+'px;" target="'+mods[i].target+'"><img src="'+mods[i].img+'" alt="'+mods[i].text+'" /></a>'+br;
@@ -180,10 +177,10 @@ MakeFile.prototype.formatData=function(){
 					var hoverId='mod'+i;
 				}
 				if(mods[i].background==""){
-					mods[i].background="url(../img/space.png) no-repeat -999px 0";
+					mods[i].background="url(img/space.png) no-repeat -999px 0";
 				}
 				if(mods[i].hoverBackground==""){
-					mods[i].hoverBackground="url(../img/space.png) no-repeat -999px 0";
+					mods[i].hoverBackground="url(img/space.png) no-repeat -999px 0";
 				}
 				html+='		<a href="'+mods[i].url+'" class="mod_link" id="'+hoverId+'" style="width:'+mods[i].width+'px;height:'+mods[i].height+'px;left:'+mods[i].left+'px;top:'+mods[i].top+'px;" target="'+mods[i].target+'">'+mods[i].text+'</a>'+br;
 				css+='#'+hoverId+'{background:'+mods[i].background+';}'+br

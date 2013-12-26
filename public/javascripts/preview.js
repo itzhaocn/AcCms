@@ -4,7 +4,6 @@ var modId=0;
 
 Preview.prototype.init=function(){
 	var self=this;
-	self.move();
 	self.setBtn();
 	self.win();
 	self.bgImg();
@@ -215,8 +214,19 @@ Preview.prototype.add=function(e){
 	var array=controlData[type];
 	for (var i=0;i<array.length;i++){
 		var opt="width,height,left,top",defaultValue='';
-		if(opt.split(",").indexOf(array[i])>=0){
-			defaultValue=100;
+		switch (array[i]){
+			case "width":
+				defaultValue=100;
+				break;
+			case "height":
+				defaultValue=100;
+				break;
+			case "left":
+				defaultValue=$(window).scrollLeft()+100;
+				break;
+			case "top":
+				defaultValue=$(window).scrollTop()+100;
+				break;		
 		}
 		content+='<div class="lh"><span>'+array[i]+':</span> <input type="text" name="'+array[i]+'" value="'+defaultValue+'" /></div>';
 	}
@@ -256,18 +266,6 @@ Preview.prototype.submit=function(){
 	
 	$("#dataArea").append('<textarea name="posts">'+data+'</textarea>')
 	$("#dataForm").submit();
-}
-
-Preview.prototype.move=function(){
-	var self=this;
-	$("#wrap").mousemove(function(e){
-		clearTimeout(self.moveTime);
-		self.moveTime=setTimeout(function(){
-			var x=e.pageX-($(window).width()-$("#wrap").width())/2,
-				y=e.pageY-parseFloat($("#preview").css("margin-top"));
-			console.log("x:"+x+",y:"+y);
-		},200);
-	})
 }
 
 var pre=new Preview();
