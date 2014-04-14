@@ -58,7 +58,7 @@ MakeFile.prototype.makeCss=function(){
 				+'.wrap_box{position:absolute;left:0;top:0;width:100%;}'+br
 				+'.wrap{width:'+this.width+'px;margin:0 auto;position:relative;}'+br
 				+'.mod,.mod_link{position:absolute;display:block;overflow:hidden;}'+br
-				+'.mod_link{text-indent:-999px;background:url(img/space.png) no-repeat -999px 0;}'+br
+				+'.mod_link{text-indent:-999px;background:url(../img/space.png) no-repeat -999px 0;}'+br
 				+'.shade{display:none;background:#000000;opacity:0.3;filter:alpha(opacity=30);position:fixed;_position:absolute;width:100%;height:100%;z-index:10;left:0;top:0;}'+br
 				+'.win{display:none;position:fixed;_position:absolute;z-index:100;left:50%;top:50%;margin:-200px 0 0 -200px;_margin:0;width:400px;height:400px;background:#CCCCCC;}'+br
 				+'.win_close{position:absolute;right:4px;top:4px;width:9px;height:8px;background:red url(../img/win_close.png) no-repeat 0 0;cursor:pointer;}'+br;
@@ -165,7 +165,11 @@ MakeFile.prototype.formatData=function(){
 				html+='		<div id="'+mods[i].mid+'" class="mod" style="width:'+mods[i].width+'px;height:'+mods[i].height+'px;left:'+mods[i].left+'px;top:'+mods[i].top+'px;"></div>'+br;
 			break;
 			case "link": 
-				html+='		<a href="'+mods[i].url+'" id="'+mods[i].mid+'" class="mod_link" style="width:'+mods[i].width+'px;height:'+mods[i].height+'px;left:'+mods[i].left+'px;top:'+mods[i].top+'px;" target="'+mods[i].target+'">'+mods[i].text+'</a>'+br;
+				if(mods[i].background==""){
+					html+='		<a href="'+mods[i].url+'" id="'+mods[i].mid+'" class="mod_link" style="width:'+mods[i].width+'px;height:'+mods[i].height+'px;left:'+mods[i].left+'px;top:'+mods[i].top+'px;" target="'+mods[i].target+'">'+mods[i].text+'</a>'+br;
+				}else{
+					html+='		<a href="'+mods[i].url+'" id="'+mods[i].mid+'" class="mod_link" style="width:'+mods[i].width+'px;height:'+mods[i].height+'px;left:'+mods[i].left+'px;top:'+mods[i].top+'px;background:'+mods[i].background+';" target="'+mods[i].target+'">'+mods[i].text+'</a>'+br;
+				}
 			break;
 			case "imgLink": 
 				html+='		<a href="'+mods[i].url+'" id="'+mods[i].mid+'" class="mod" style="width:'+mods[i].width+'px;height:'+mods[i].height+'px;left:'+mods[i].left+'px;top:'+mods[i].top+'px;" target="'+mods[i].target+'"><img src="'+mods[i].img+'" alt="'+mods[i].text+'" /></a>'+br;
@@ -175,12 +179,6 @@ MakeFile.prototype.formatData=function(){
 					var hoverId=mods[i].mid;
 				}else{
 					var hoverId='mod'+i;
-				}
-				if(mods[i].background==""){
-					mods[i].background="url(img/space.png) no-repeat -999px 0";
-				}
-				if(mods[i].hoverBackground==""){
-					mods[i].hoverBackground="url(img/space.png) no-repeat -999px 0";
 				}
 				html+='		<a href="'+mods[i].url+'" class="mod_link" id="'+hoverId+'" style="width:'+mods[i].width+'px;height:'+mods[i].height+'px;left:'+mods[i].left+'px;top:'+mods[i].top+'px;" target="'+mods[i].target+'">'+mods[i].text+'</a>'+br;
 				css+='#'+hoverId+'{background:'+mods[i].background+';}'+br
