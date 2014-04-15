@@ -30,15 +30,10 @@ Modify.prototype.init=function(){
 	}
 }
 
-
 Modify.prototype.setBg=function(){
-	var bgArray=this.bg.split(","),
-		n=bgArray.length-1,
-		html='';
-	for (var i=0;i<n;i++){
-		var item=bgArray[i].split(":");
-		html+='<div style="background:url(/html/'+this.webId+'/img/'+item[0]+') no-repeat center 0;height:'+item[1]+'px;"></div>'
-	}
+	var bg=this.bg.split("**"),
+		bgImg=bg[bg.length-1].split("::");
+	var html='<div style="background:url(/html/'+this.webId+'/img/'+bgImg[0]+') no-repeat center 0;height:'+bgImg[1]+'px;"></div>'
 	$("#bgBox").append(html);
 }
 

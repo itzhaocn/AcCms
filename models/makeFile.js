@@ -64,13 +64,33 @@ MakeFile.prototype.makeCss=function(){
 				+'.win_close{position:absolute;right:4px;top:4px;width:9px;height:8px;background:red url(../img/win_close.png) no-repeat 0 0;cursor:pointer;}'+br;
 
 
-	var bgs=this.bg.split(",");
-	for (var i=0;i<(bgs.length-1);i++ ){
-		var array=bgs[i].split(":");
-		content+='.bg'+(i+1)+'{width:100%;background:url(../img/'+array[0]+') no-repeat center 0;height:'+array[1]+'px;}'+br;
-	}
-	content+=this.cssMod;
+	var bgs=this.bg.split("**"),
+		n=bgs.length,
+		j=1,
+		self=this;
+	//生成背景图
+	(function makeBg(){
+		var array=bgs[j-1].split("::");
+		var imgData=array[2].split("base64,");
+		fs.open(self.path+'/img/'+array[0], 'w', 0644,function(e,fd){
+			if(e) throw e;
+			fs.write(fd,imgData[1],0,'base64',function(e){
+				if(e) throw e;
+				fs.closeSync(fd);
+			})
+		})
+		j++;
+		if(j<=n){
+			setTimeout(arguments.callee,10);
+		}
+	})();
 
+	for (var i=1;i<n;i++ ){
+		var array=bgs[i-1].split("::");
+		content+='.bg'+i+'{width:100%;background:url(../img/'+array[0]+') no-repeat center 0;height:'+array[1]+'px;}'+br;
+	}
+	
+	content+=this.cssMod;
 
 	fs.open(this.path+'/css/style.css', 'w', 0644,function(e,fd){
 		if(e) throw e;

@@ -39,12 +39,60 @@ Preview.prototype.bgImg=function(){
 					var img = new Image;
 					var src=this.result;
 					img.alt=file.name;
+
+					var canvas=document.getElementById('myCanvas'),
+						canvas2=document.getElementById('myCanvas2');
+					if(canvas.getContext){
+						var ctx=canvas.getContext('2d'),
+							ctx2=canvas2.getContext('2d');
+
+						//插入图像(drawImage方法只能在图像完全载入后才能调用)
+						//var img=new Image();
+						
+						img.onload = function(){
+							div.style.overflow='hidden';
+							div.style.height=img.height+'px';
+							if(img.width!=canvas.width){
+								canvas.width=img.width;	
+							}
+							if(img.height != canvas.height){
+								canvas.height=img.height;
+							}
+							canvas2.width=img.width;
+							ctx.drawImage(img,0,0);
+							var n=Math.ceil(img.height/clipHeight);
+
+							for (var i=1;i<=n;i++){
+								ctx2.clearRect(0,0,canvas2.width,canvas2.height);
+								if(i==n){
+									var bgHeight=img.height%clipHeight;
+									var imgData=ctx.getImageData(0,clipHeight*(i-1),canvas.width,canvas.height);
+								}else{		
+									var bgHeight=clipHeight;
+									var imgData=ctx.getImageData(0,clipHeight*(i-1),canvas.width,clipHeight*i);
+								}
+								canvas2.height=bgHeight;
+								ctx2.putImageData(imgData,0,0);
+								bg+='bg'+i+'.jpg'+'::'+bgHeight+'::'+convertCanvasToImage(canvas2)+'**';
+							}
+							bg+='bg_img.jpg'+'::'+img.height+'::'+convertCanvasToImage(canvas);
+							
+							$("#bg").val(bg);   
+						};
+						
+						//img.src="test.jpg";
+					}
+
+					//多背景图上传,需手动复制图片到img
+					/*
 					img.onload = function(){
 						div.style.overflow='hidden';
 						div.style.height=img.height+'px';
 						bg+=file.name+':'+img.height+",";
-						$("#bg").val(bg);
+						$("#bg").val(bg);   
 					};
+					*/
+
 					img.src=this.result;
 					span.innerHTML = '<img class="thumb" src="'+ this.result +'" alt="'+ file.name +'" />';
 					div.appendChild(span);
@@ -280,6 +328,9 @@ $("#submit").click(function(){
 	return false;
 })
 
+function convertCanvasToImage(opt) {
+	return opt.toDataURL("image/jpeg");
+}
 
 
 
