@@ -98,12 +98,14 @@ Post.get = function(time, callback) {//读取文章及其相关信息
         mongodb.close();
         return callback(err);
       }
-      var query = {};
+      var query = query2 = {};
       if (time) {
         query.time = time;
-      }
+      }else{
+		query2={time:1,web:1};
+	  }
       //根据 query 对象查询文章
-      collection.find(query).sort({
+      collection.find(query,query2).sort({
         time: -1
       }).toArray(function (err, docs) {
         mongodb.close();
@@ -115,6 +117,7 @@ Post.get = function(time, callback) {//读取文章及其相关信息
     });
   });
 };
+
 
 Post.prototype.del = function(id, callback) {
 	mongodb.open(function (err, db) {
