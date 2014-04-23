@@ -99,22 +99,35 @@ Post.get = function(time, callback) {//读取文章及其相关信息
         return callback(err);
       }
       var query = {};
-      if (time) {
+	  if (time) {
         query.time = time;
-      }
-      //根据 query 对象查询文章
-      collection.find(query).sort({
-        time: -1
-      }).toArray(function (err, docs) {
-        mongodb.close();
-        if (err) {
-          callback(err, null);//失败！返回 null
-        }
-        callback(null, docs);//成功！以数组形式返回查询的结果
-      });
+		  //根据 query 对象查询文章
+		  collection.find(query).sort({
+			time: -1
+		  }).toArray(function (err, docs) {
+			mongodb.close();
+			if (err) {
+			  callback(err, null);//失败！返回 null
+			}
+			callback(null, docs);//成功！以数组形式返回查询的结果
+		  });
+	  }else{
+		  //根据 query 对象查询文章
+		  collection.find({},{time:1,web:1}).sort({
+			time: -1
+		  }).toArray(function (err, docs) {
+			mongodb.close();
+			if (err) {
+			  callback(err, null);//失败！返回 null
+			}
+			callback(null, docs);//成功！以数组形式返回查询的结果
+		  });
+	  }
+
     });
   });
 };
+
 
 Post.prototype.del = function(id, callback) {
 	mongodb.open(function (err, db) {
