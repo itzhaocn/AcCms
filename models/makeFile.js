@@ -112,9 +112,9 @@ MakeFile.prototype.makeHtml=function(){
 			   +'</head>'+br
 			   +'<body>'+br
 			   +'<div class="bg_box">'+br;
-	var bgs=this.bg.split(",")
-	for (var i=0;i<(bgs.length-1);i++ ){
-		content+='	<div class="bg'+(i+1)+'"><i></i></div>'+br;
+	var bgs=this.bg.split("**")
+	for (var i=1;i<bgs.length;i++ ){
+		content+='	<div class="bg'+i+'"><i></i></div>'+br;
 	}
 	content+='</div>'+br
 			+'<div class="wrap_box">'+br

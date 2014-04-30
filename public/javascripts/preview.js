@@ -66,6 +66,9 @@ Preview.prototype.bgImg=function(){
 								ctx2.clearRect(0,0,canvas2.width,canvas2.height);
 								if(i==n){
 									var bgHeight=img.height%clipHeight;
+									if(bgHeight==0){
+										bgHeight=clipHeight;
+									}
 									var imgData=ctx.getImageData(0,clipHeight*(i-1),canvas.width,canvas.height);
 								}else{		
 									var bgHeight=clipHeight;
