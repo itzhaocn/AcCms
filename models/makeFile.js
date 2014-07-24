@@ -54,6 +54,7 @@ MakeFile.prototype.makeCss=function(){
 				+'*:first-child+html .group{min-height:1px;}'+br
 				+'.group:after{content:".";display:block;height:0;clear:both;visibility:hidden;font-size:0;}'+br
 				+'.bg_box{min-width:'+this.width+'px;height:'+this.height+'px;}'+br
+				+'.bg_box div{width:100%;}'+br
 				+'.bg_box i{display:block;height:1px;font-size:0;line-height:0;width:'+this.width+'px;margin:0 auto;}'+br
 				+'.wrap_box{position:absolute;left:0;top:0;width:100%;}'+br
 				+'.wrap{width:'+this.width+'px;margin:0 auto;position:relative;}'+br
@@ -87,7 +88,7 @@ MakeFile.prototype.makeCss=function(){
 
 	for (var i=1;i<n;i++ ){
 		var array=bgs[i-1].split("::");
-		content+='.bg'+i+'{width:100%;background:url(../img/'+array[0]+') no-repeat center 0;height:'+array[1]+'px;}'+br;
+		content+='.bg'+i+'{background:url(../img/'+array[0]+') no-repeat center 0;height:'+array[1]+'px;}'+br;
 	}
 	
 	content+=this.cssMod;

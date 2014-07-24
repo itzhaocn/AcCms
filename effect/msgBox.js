@@ -1,14 +1,17 @@
 //弹窗
+
+
 function msgBox(id,pos){
 	if(pos=="true"){
 		$(window).scrollTop(0);
 	}
+	var timer;
 	winLocationForIe6(id);
 	$(window).scroll(function(){
-		winLocationForIe6(id);
+		fixedTimer();
 	})
 	$(window).resize(function(){
-		winLocationForIe6(id);
+		fixedTimer();
 	})
 	function winLocationForIe6(){
 		if($.browser.msie && $.browser.version == 6.0){
@@ -32,6 +35,12 @@ function msgBox(id,pos){
 				$("#shade").css("width","100%");
 			}
 		}
+	}
+	function fixedTimer(){
+		clearTimeout(timer);
+		timer=setTimeout(function(){
+			winLocationForIe6(id);
+		},100);
 	}
 	$(".win_close").click(function(){
 		$(this).parent().hide();

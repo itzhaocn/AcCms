@@ -25,7 +25,7 @@ var controlData={
 	"winControl":["mid","className","btnId","btnName","returnTop"]
 }
 
-var clipHeight=200;
+var clipHeight=150;
 
 
 
