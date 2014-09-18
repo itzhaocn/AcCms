@@ -69,14 +69,13 @@ MakeFile.prototype.makeCss=function(){
 		n=bgs.length,
 		j=1,
 		self=this;
-	//生成背景图
+	//生成背景图并压缩
 	(function makeBg(){
 		var array=bgs[j-1].split("::");
 		var imgData=array[2].split("base64,");
 		fs.open(self.path+'/img/'+array[0], 'w', 0644,function(e,fd){
 			if(e) throw e;
 			fs.write(fd,imgData[1],0,'base64',function(e){
-				if(e) throw e;
 				fs.closeSync(fd);
 			})
 		})
@@ -264,4 +263,4 @@ MakeFile.prototype.formatData=function(){
 
 
 
-
+ 
